@@ -19,6 +19,7 @@
   "homepage": "https://github.com/DevRayHE/employee-tracker#readme",
   "dependencies": {
     "dedent": "^0.7.0",
-    "inquirer": "^8.2.0"
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3-rc.0"
   }
 }
