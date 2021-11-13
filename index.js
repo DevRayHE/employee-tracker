@@ -1,11 +1,11 @@
 // const dedent = require('dedent');
 // const inquirer = require('inquirer');
-const connection = require('./config/connection');
+// const connection = require('./config/connection');
 const inquirerFunc = require('./src/inquirerFunc');
 
 function init() {
   // Connect to database
-  connection;
+  // connection;
   // Initialize user interface main menu
   inquirerFunc.mainMenu();
 };

@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const connection = require('../config/connection');
 
 // original promise version
 // const mainMenu = () => {
@@ -100,7 +101,7 @@ async function mainMenu()  {
     case 'View All Employees':
       // Select all data from employee table and display
       console.log('Selected View All Employees');
-      mainMenu();
+      viewAllEmployees();
       break;
 
     case 'Add Employee':
@@ -118,6 +119,7 @@ async function mainMenu()  {
     case 'View All Roles':
       // Select all data from role table and display
       console.log('Selected View All Roles');
+      viewAllRoles();
       mainMenu();
       break;
 
@@ -130,6 +132,7 @@ async function mainMenu()  {
     case 'View All Departments':
       // Select all data from department table and display
       console.log('Selected View All Departments');
+      viewAllDepartments();
       mainMenu();
       break;
 
@@ -139,6 +142,42 @@ async function mainMenu()  {
       mainMenu();
       break;
   }
+}
+
+function viewAllEmployees() {
+  const allEmployee = connection.query(
+    'SELECT * FROM employee',
+    function(err, results, fields) {
+      console.log(results);
+    }
+  );
+
+  console.table(allEmployee);
+  mainMenu();
+}
+
+function viewAllRoles() {
+  const allRoles = connection.query(
+    'SELECT * FROM role',
+    function(err, results, fields) {
+      console.log(results);
+    }
+  );
+
+  console.table(allRoles);
+  mainMenu();
+}
+
+function viewAllDepartments() {
+  const allDepartments = connection.query(
+    'SELECT * FROM department',
+    function(err, results, fields) {
+      console.log(results);
+    }
+  );
+
+  console.table(allDepartments);
+  mainMenu();
 }
 
 module.exports = {

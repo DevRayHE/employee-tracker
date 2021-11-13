@@ -17,7 +17,7 @@ const testDepart = connection.query(
   }
 );
 
-// // Async Await version:
+// Async Await version:
 // async function connection() {
 //   // get the client
 //   const mysql = require('mysql2');
@@ -31,7 +31,7 @@ const testDepart = connection.query(
 
 //   const promisePool = pool.promise();
 //   //query database using promises
-//   const [rows, fields] = await promisePool.query('SELECT * FROM department');
+//   // const [rows, fields] = await promisePool.query('SELECT * FROM department');
 // }
 
 module.exports = connection;
