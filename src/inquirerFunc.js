@@ -100,8 +100,8 @@ async function mainMenu()  {
 
     case 'View All Employees':
       // Select all data from employee table and display
-      console.log('Selected View All Employees');
-      viewAllEmployees();
+      // console.log('Selected View All Employees');
+      viewAll('employee');
       mainMenu();
       break;
 
@@ -119,8 +119,8 @@ async function mainMenu()  {
 
     case 'View All Roles':
       // Select all data from role table and display
-      console.log('Selected View All Roles');
-      viewAllRoles();
+      // console.log('Selected View All Roles');
+      viewAll('role');
       mainMenu();
       break;
 
@@ -132,8 +132,8 @@ async function mainMenu()  {
 
     case 'View All Departments':
       // Select all data from department table and display
-      console.log('Selected View All Departments');
-      viewAllDepartments();
+      // console.log('Selected View All Departments');
+      viewAll('department');
       mainMenu();
       break;
 
@@ -145,12 +145,28 @@ async function mainMenu()  {
   }
 }
 
-function viewAllEmployees() {
+viewAll = (content) => {
   dbConnection
   .promise()
-  .query('SELECT * FROM employee')
-  .then(([rows]) => console.table(rows));
+  .query(`SELECT * FROM ${content}`)
+  .then(([rows]) => {
+    console.log(`
+    
+    -- Showing all ${content} -- 
+    `);
+    console.table(rows)
+  });
 }
+
+// function viewAllDepartments() {
+//   dbConnection
+//   .promise()
+//   .query('SELECT * FROM department')
+//   .then(([rows]) => {
+//     console.log('\n\n -- Showing all departments -- \n');
+//     console.table(rows)
+//   });
+// }
 
 // async function viewAllEmployees() {
 //   const [allEmployee] = await dbConnection.promisePool.query('SELECT * FROM employee');
@@ -161,24 +177,6 @@ function viewAllEmployees() {
 //   // console.table(allEmployee);
 //   mainMenu();
 // }
-
-function viewAllRoles() {
-  dbConnection
-  .promise()
-  .query('SELECT * FROM role')
-  .then(([rows]) => console.table(rows));
-}
-
-function viewAllDepartments() {
-  dbConnection
-  .promise()
-  .query('SELECT * FROM department')
-  .then(([rows]) => {
-    console.log('\n\n -- Showing all departments -- \n');
-    console.table(rows)
-  });
-}
-
 
 
 module.exports = {
