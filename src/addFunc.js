@@ -9,6 +9,13 @@ async function addDepartment() {
       type: 'input',
       message: 'What is the name of the department?',
       name: 'newDepartment',
+      validate: (input) => {
+        if (!input) {
+          console.log("\nPlease enter department name!");
+          return false;
+        }
+        return true;
+      },
     }
   ]);
 
@@ -35,11 +42,25 @@ async function addRole() {
       type: 'input',
       message: 'What is the name of the role?',
       name: 'roleName',
+      validate: (input) => {
+        if (!input) {
+          console.log("\nPlease enter role name!");
+          return false;
+        }
+        return true;
+      },
     },
     {
       type: 'input',
       message: 'What is the salary of the role?',
       name: 'roleSalary',
+      validate: (input) => {
+        if (!input || isNaN(input)) {
+          console.log("\nPlease input valid role salary!");
+          return false;
+        }
+        return true;
+      },
     },
     {
       type: 'list',
@@ -69,6 +90,7 @@ async function addEmployee() {
 
   const roleNameArray = await getAllRolename();
   const managerFullNameArray = await getAllManagerFullName();
+  const managerChoices = ['None'].concat(managerFullNameArray);
 
 
   const { firstName, lastName, roleChoice, managerChoice } = await inquirer.prompt([ 
@@ -76,11 +98,25 @@ async function addEmployee() {
       type: 'input',
       message: 'What is the employee\'s first name?',
       name: 'firstName',
+      validate: (input) => {
+        if (!input) {
+          console.log("\nPlease enter first name!");
+          return false;
+        }
+        return true;
+      },
     },
     {
       type: 'input',
       message: 'What is the employee\'s last name?',
       name: 'lastName',
+      validate: (input) => {
+        if (!input) {
+          console.log("\nPlease enter last name!");
+          return false;
+        }
+        return true;
+      },
     },
     {
       type: 'list',
@@ -92,7 +128,7 @@ async function addEmployee() {
       type: 'list',
       message: 'Who\'s the employee\'s manager?',
       name: 'managerChoice',
-      choices: managerFullNameArray,
+      choices: managerChoices,
     },
   ]);
 
@@ -151,7 +187,8 @@ async function updateRole() {
 // Function to update employee managers
 async function updateManager() {
   const employeeNameArray = await getAllEmployeeFullName();
-  const managerNameArray = await getAllManagerFullName();
+  const managerFullNameArray = await getAllManagerFullName();
+  const managerChoices = ['None'].concat(managerFullNameArray);
 
   const { employee, manager } = await inquirer.prompt([
     {
@@ -164,7 +201,7 @@ async function updateManager() {
       type: 'list',
       message: 'Who is now the selected employee\'s manager?',
       name: 'manager',
-      choices: managerNameArray,
+      choices: managerChoices,
     },
   ]);
 

@@ -95,6 +95,10 @@ getAllManagerFullName = () => {
 // take manager name as parameter and return the correspondence manager ID
 getEmployeeId = (employeeFullName) => {
 
+  if (employeeFullName === 'None') {
+    return null;
+  }
+
   const employeeName = employeeFullName.split(' ');
   const firstName = employeeName[0];
   const lastName = employeeName[1];
