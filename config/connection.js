@@ -1,24 +1,18 @@
 require('dotenv').config();
+// const inquirerFunc = require('../src/inquirerFunc.js');
 const mysql = require('mysql2');
 
-//Create the conenction pool
-const connection = mysql.createPool ({
+// Create the conenction pool
+const dbConnection = mysql.createPool ({
   host: 'localhost',
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
 });
 
-const testDepart = connection.query(
-  'SELECT * FROM department',
-  function(err, results, fields) {
-    console.log(err);
-    console.log(results);
-  }
-);
 
 // Async Await version:
-// async function connection() {
+// async function dbConnection() {
 //   // get the client
 //   const mysql = require('mysql2');
 //   // create the pool
@@ -30,8 +24,12 @@ const testDepart = connection.query(
 //   });
 
 //   const promisePool = pool.promise();
+//   await inquirerFunc.mainMenu(promisePool);
 //   //query database using promises
 //   // const [rows, fields] = await promisePool.query('SELECT * FROM department');
+//   // console.table(rows);
 // }
 
-module.exports = connection;
+// dbConnection();
+
+module.exports = dbConnection;

@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const connection = require('../config/connection');
+const dbConnection = require('../config/connection');
 
 // original promise version
 // const mainMenu = () => {
@@ -102,6 +102,7 @@ async function mainMenu()  {
       // Select all data from employee table and display
       console.log('Selected View All Employees');
       viewAllEmployees();
+      mainMenu();
       break;
 
     case 'Add Employee':
@@ -145,41 +146,41 @@ async function mainMenu()  {
 }
 
 function viewAllEmployees() {
-  const allEmployee = connection.query(
-    'SELECT * FROM employee',
-    function(err, results, fields) {
-      console.log(results);
-    }
-  );
-
-  console.table(allEmployee);
-  mainMenu();
+  dbConnection
+  .promise()
+  .query('SELECT * FROM employee')
+  .then(([rows]) => console.table(rows));
 }
 
-function viewAllRoles() {
-  const allRoles = connection.query(
-    'SELECT * FROM role',
-    function(err, results, fields) {
-      console.log(results);
-    }
-  );
+// async function viewAllEmployees() {
+//   const [allEmployee] = await dbConnection.promisePool.query('SELECT * FROM employee');
 
-  console.table(allRoles);
-  mainMenu();
+//   console.table(allEmployee);
+
+//   // const [allEmployee, fields] = await connection.promisePool.query('SELECT * FROM employee');
+//   // console.table(allEmployee);
+//   mainMenu();
+// }
+
+function viewAllRoles() {
+  dbConnection
+  .promise()
+  .query('SELECT * FROM role')
+  .then(([rows]) => console.table(rows));
 }
 
 function viewAllDepartments() {
-  const allDepartments = connection.query(
-    'SELECT * FROM department',
-    function(err, results, fields) {
-      console.log(results);
-    }
-  );
-
-  console.table(allDepartments);
-  mainMenu();
+  dbConnection
+  .promise()
+  .query('SELECT * FROM department')
+  .then(([rows]) => {
+    console.log('\n\n -- Showing all departments -- \n');
+    console.table(rows)
+  });
 }
+
+
 
 module.exports = {
   mainMenu,
-}
+};
