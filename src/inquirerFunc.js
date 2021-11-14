@@ -50,8 +50,7 @@ async function mainMenu()  {
 
     case 'Update Employee Role':
       // 1.Display Employee as inquirer choices 2.Display current Role 3. Select available role to add
-      console.log('Selected Update Employee Role');
-      mainMenu();
+      updateRole()
       break;
 
     case 'View All Roles':
@@ -62,7 +61,6 @@ async function mainMenu()  {
 
     case 'Add Role':
       // Display current roles, userinput new role (Erro check with current role data to avoid duplicate roles?)
-      console.log('Selected Add Role');
       addRole();
       break;
 
@@ -74,7 +72,6 @@ async function mainMenu()  {
 
     case 'Add Department':
       // Display current departments, userinput new department (Erro check with current department data to avoid duplicate roles?)
-      console.log('Selected ADD Departments');
       addDepartment();
       break;
   }
@@ -173,89 +170,75 @@ getAllManagerFullName = () => {
 };
 
 // take manager name as parameter and return the correspondence manager ID
-getManagerId = (managerFullName) => {
+getEmployeeId = (employeeFullName) => {
 
-  const managerName = managerFullName.split(' ');
-  const managerFirstName = managerName[0];
-  const managerLastName = managerName[1];
+  const employeeName = employeeFullName.split(' ');
+  const firstName = employeeName[0];
+  const lastName = employeeName[1];
 
   return dbConnection
   .promise()
   .query('SELECT * FROM employee WHERE first_name = ? AND last_name = ?',
-  [managerFirstName, managerLastName],
+  [firstName, lastName],
   (err,results, fields) => {
     console.log(err);
-    console.log(results);
   })
   .then((row) => {
-    console.log(row);
-    const managerId = row[0][0].id;
-    return managerId;
+    const employeeId = row[0][0].id;
+    return employeeId;
   })
   .catch((err) => {
     console.log(err);
   });
 };
 
-// Function to add an employee
-async function addEmployee() {
+// get all the employee's full name and return as Array
+getAllEmployeeFullName = () => {
+  return dbConnection
+  .promise()
+  .query(`SELECT * FROM employee`)
+  .then((rows) => {
+    const EmployeeFullName = rows[0].map(row => (row.first_name + ' ' + row.last_name));
+    return (EmployeeFullName);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};
 
-  const roleNameArray = await getAllRolename();
-  const managerFullNameArray = await getAllManagerFullName();
-
-  console.log(roleNameArray);
-  console.log(managerFullNameArray);
-
-  let { firstName, lastName, roleChoice, managerChoice } = await inquirer.prompt([ 
+// Function to add a department
+async function addDepartment() {
+  
+  const { newDepartment } = await inquirer.prompt([ 
     {
       type: 'input',
-      message: 'What is the employee\'s first name?',
-      name: 'firstName',
-    },
-    {
-      type: 'input',
-      message: 'What is the employee\'s last name?',
-      name: 'lastName',
-    },
-    {
-      type: 'list',
-      message: 'What\'s the employee\'s role?',
-      name: 'roleChoice',
-      choices: roleNameArray,
-    },
-    {
-      type: 'list',
-      message: 'Who\'s the employee\'s manager?',
-      name: 'managerChoice',
-      choices: managerFullNameArray,
-    },
+      message: 'What is the name of the department?',
+      name: 'newDepartment',
+    }
   ]);
-
-  const roleId = await getRoleId(roleChoice);
-  const managerId = await getManagerId(managerChoice);
 
   // using execute helper to prepare and query the statement
   dbConnection
   .execute(
-    `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, 
-    [firstName, lastName, roleId, managerId],
-    function(err, results, fields) {
+    'INSERT INTO department (name) VALUES (?)',
+    [newDepartment],
+    (err, results, fields) => {
       console.log(err);
       console.log(results);
     }
   );
 
-  console.log(`Employee: ${firstName} ${lastName}, role_id: ${roleId}, manager_id: ${managerId} added to role.`)
+  console.log(`${newDepartment} added to departments.`)
 
   mainMenu();
-}
+};
 
 // Function to add a role
 async function addRole() {
   
   const departmentNameArray = await getAllDepartmentName();
 
-  let { roleName, roleSalary, roleDepChoice } = await inquirer.prompt([ 
+  const { roleName, roleSalary, roleDepChoice } = await inquirer.prompt([ 
     {
       type: 'input',
       message: 'What is the name of the role?',
@@ -294,32 +277,101 @@ async function addRole() {
   mainMenu();
 };
 
-// Function to add a department
-async function addDepartment() {
-  
-  const { newDepartment } = await inquirer.prompt([ 
+// Function to add an employee
+async function addEmployee() {
+
+  const roleNameArray = await getAllRolename();
+  const managerFullNameArray = await getAllManagerFullName();
+
+
+  const { firstName, lastName, roleChoice, managerChoice } = await inquirer.prompt([ 
     {
       type: 'input',
-      message: 'What is the name of the department?',
-      name: 'newDepartment',
-    }
+      message: 'What is the employee\'s first name?',
+      name: 'firstName',
+    },
+    {
+      type: 'input',
+      message: 'What is the employee\'s last name?',
+      name: 'lastName',
+    },
+    {
+      type: 'list',
+      message: 'What\'s the employee\'s role?',
+      name: 'roleChoice',
+      choices: roleNameArray,
+    },
+    {
+      type: 'list',
+      message: 'Who\'s the employee\'s manager?',
+      name: 'managerChoice',
+      choices: managerFullNameArray,
+    },
   ]);
+
+  const roleId = await getRoleId(roleChoice);
+  const managerId = await getEmployeeId(managerChoice);
 
   // using execute helper to prepare and query the statement
   dbConnection
   .execute(
-    'INSERT INTO department (name) VALUES (?)',
-    [newDepartment],
-    (err, results, fields) => {
+    `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, 
+    [firstName, lastName, roleId, managerId],
+    function(err, results, fields) {
       console.log(err);
       console.log(results);
     }
   );
 
-  console.log(`${newDepartment} added to departments.`)
+  console.log(`Employee: ${firstName} ${lastName}, role_id: ${roleId}, manager_id: ${managerId} added to role.`)
 
   mainMenu();
-};
+}
+
+// Function to update an employee's new role
+async function updateRole() {
+
+  const employeeNameArray = await getAllEmployeeFullName();
+  const roleNameArray = await getAllRolename();
+
+  const { employee, roleChoice } = await inquirer.prompt([
+    {
+      type: 'list',
+      message: 'Which employee\'s role do you want to update?',
+      name: 'employee',
+      choices: employeeNameArray,
+    },
+    {
+      type: 'list',
+      message: 'Which role do you want to assign the selected employee?',
+      name: 'roleChoice',
+      choices: roleNameArray,
+    },
+  ]);
+
+  const employeeId = await getEmployeeId(employee);
+  const roleId = await getRoleId(roleChoice);
+
+  console.log(roleId);
+  console.log(employeeId);
+
+  let sql = `UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId}`
+
+  dbConnection
+  .execute(
+    `UPDATE employee SET role_id = ? WHERE id = ?`,
+    [roleId, employeeId],
+    (err, results, fields) => {
+      console.log(err);
+      // console.log(results);
+    }
+  );
+
+  console.log(`${employee}'s role updated.`)
+
+  mainMenu();
+}
+
 
 // Function to delete department.
 // async function deleteDepartment() {
