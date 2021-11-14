@@ -1,13 +1,24 @@
-// const dedent = require('dedent');
-// const inquirer = require('inquirer');
+
 // const connection = require('./config/connection');
-const inquirerFunc = require('./src/inquirerFunc');
+const mainFunc = require('./src/mainFunc');
 
 function init() {
-  // Connect to database
-  // connection;
+
+  const title = 
+`
+
+/---------------------------/
+|                           | 
+|     Employee Manager      |
+|                           |
+/---------------------------/
+
+`;
+
+  console.log(title);
   // Initialize user interface main menu
-  inquirerFunc.mainMenu();
+  mainFunc.mainMenu();
 };
 
 init();
+
