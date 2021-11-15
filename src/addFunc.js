@@ -220,10 +220,11 @@ async function updateManager() {
 
 }
 
+
 module.exports = {
   addDepartment,
   addRole,
   addEmployee,
   updateRole,
-  updateManager
+  updateManager,
 };

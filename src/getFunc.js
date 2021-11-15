@@ -7,6 +7,7 @@ viewAll = (content) => {
   .promise()
   .query(`SELECT * FROM ${content}`)
   .then(([rows]) => {
+    // const transformed = rows.reduce((acc, {id, ...x}) => { acc[id] = x; return acc}, {})
     console.log(`
     
     -- Showing all ${content} -- 

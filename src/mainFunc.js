@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const getFunc = require('./getFunc');
 const addFunc = require('./addFunc');
+const delFunc = require('./delFunc');
 
 // Function to display main menu
 async function mainMenu()  {
@@ -19,7 +20,10 @@ async function mainMenu()  {
         'Add Role',
         'View All Departments',
         'Add Department',
-        'Update employee managers'
+        'Update Employee Managers',
+        'Delete Department',
+        'Delete Role',
+        'Delete Employee'
       ],
     }
   ]);
@@ -39,7 +43,7 @@ async function mainMenu()  {
       break;
 
     case 'Update Employee Role':
-      // 1.Display Employee as inquirer choices 2.Display current Role 3. Select available role to add
+      // Display Employee as inquirer choices and Select available role to add
       await addFunc.updateRole();
       mainMenu();
       break;
@@ -51,7 +55,7 @@ async function mainMenu()  {
       break;
 
     case 'Add Role':
-      // Display current roles, userinput new role (Erro check with current role data to avoid duplicate roles?)
+      // Display current roles, userinput new role
       await addFunc.addRole();
       mainMenu();
       break;
@@ -63,16 +67,34 @@ async function mainMenu()  {
       break;
 
     case 'Add Department':
-      // Display current departments, userinput new department (Erro check with current department data to avoid duplicate roles?)
+      // Add userinput department into database
       await addFunc.addDepartment(mainMenu);
       mainMenu();
       break;
 
-    case 'Update employee managers':
+    case 'Update Employee Managers':
       // Display current employee list, select employee and select manager, employee's manager updated in database
       await addFunc.updateManager();
       mainMenu();
       break;
+
+    case 'Delete Department':
+      // Select the department from list and delete the record from database
+      await delFunc.deleteDepartment();
+      mainMenu();
+      break;
+
+    case 'Delete Role':
+    // Select the role from list and delete the record from database
+    await delFunc.deleteRole();
+    mainMenu();
+    break;
+
+    case 'Delete Employee':
+    // Select the employee from list and delete the record from database
+    await delFunc.deleteEmployee();
+    mainMenu();
+    break;
   }
 };
 

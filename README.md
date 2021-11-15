@@ -59,7 +59,7 @@
 2. Start up your favourite terminal.
 3. Navigate to the repository local folder.
 4. Run npm i
-5. Run node index.js
+5. Run npm start
 6. Simply follow the prompt.
 7. A professional employee management system is ready for your!
 
