@@ -7,7 +7,7 @@
 
 ## 📖Description
 
-### command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL.
+### Command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL.
 
 ### Langugaes used: 
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
